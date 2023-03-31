@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{/layout/layout :: main-fragment(
+                                                                     ~{:: title},
+                                                                    'header',
+                                                                    'footer',
+                                                                     ~{:: #css-resources},
+                                                                     ~{:: #js-resources},
+                                                                     ~{:: #main-content}
+                                                                    )}">
+<head>
+    <meta charset="UTF-8">
+    <title>Giỏ hàng</title>
+    <th:block id="css-resources">
+        <th:block id="css-resources">
+            <style>
+                .main-content .nav {
+                    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+                }
+
+                @media (max-width: 767px) {
+                    .main-content .nav {
+                        display: flex;
+                        flex-wrap: nowrap;
+                        overflow: scroll;
+                    }
+                    .main-content .nav-item {
+                        white-space: nowrap;
+                    }
+                }
+
+            </style>
+            <link rel="stylesheet" th:href="@{/shop/css/custom.css}">
+        </th:block>
+
+
+</th:block>
+
+</head>
+<body>
+
+<main class="main" id="main-content">
+    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/"><i class="icon-home"></i></a></li>
+                <li class="breadcrumb-item active" aria-current="page">Giỏ hàng</li>
+            </ol>
+        </div><!-- End .container -->
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <section class="h-100 h-custom" style="background-color: #eee;">
+                    <div class="container h-100 py-5">
+                        <div class="row d-flex justify-content-center align-items-center h-100">
+                            <div class="col">
+                                <div class="card shopping-cart" style="border-radius: 15px;">
+                                    <div class="card-body text-black">
+
+                                                <h3 class="mb-5 pt-2 text-center fw-bold text-uppercase">Your products</h3>
+                                                <div class="tab-content" id="pills-tabContent">
+                                                    <div class="tab-pane fade show active" id="list-order" role="tabpanel" aria-labelledby="pending-tab">
+                                                        <th:block th:each="item : ${listProductInCart}">
+                                                            <!-- Item -->
+                                                            <div class="item">
+                                                                <div class="header-item">
+                                                                    <a class="full-details" th:href="@{/{slug}/{id}(id=${item.productId}, slug=${item.productName})}">Xem chi tiết sản phẩm</a>
+                                                                </div>
+                                                                <div class="item-info-wrapper">
+                                                                    <div class="product-info-wrapper" style="display: flex; align-items: center;" >
+                                                                        <div class="thumbnailss" style="width: 150px; height: 150px;">
+                                                                            <img class="img-fluid" style="width: 150px; height: 150px" th:src="@{${item.productImg}}"  th:alt="${item.productName}"/>
+                                                                        </div>
+                                                                        <div class="product-info" style="margin-left: 1.25rem;"><span class="name" style="font-weight: bold; color: #333333;" th:text="${item.productName}"></span></div>
+                                                                        <div class="price bid-price" style="font-weight: bold; text-align: right; margin-left: 200px">
+                                                                            <div style="">
+                                                                                <span class="text-price" style="color: #0a6aa1; font-size: 20px;" th:text="${item.productPrice}"></span> &#x20AB;</div>
+                                                                            </div>
+                                                                        <div class="full-details" >
+                                                                            <button  class=" btn buy-now buy-now-cart"  style="background-color: #0a6aa1; color: #fff; border: none; border-radius: 4px; " type="button" >
+                                                                                <style>
+                                                                                    .buy-now-cart{
+                                                                                        margin-left: 10px;
+                                                                                        background-color: #0a6aa1;
+                                                                                        color: #FFFFFF;
+                                                                                        border: none;
+                                                                                        border-radius: 5px;
+                                                                                        box-shadow: 0 5px #00a3f5;
+                                                                                        transition:  0.2s;
+                                                                                    }
+                                                                                    .buy-now-cart:active{
+                                                                                        box-shadow: none;
+                                                                                        transform: translateX(5px);
+                                                                                    }
+                                                                                </style>
+                                                                                Mua hàng</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </th:block>
+                                                    </div>
+                                                </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</main>
+<th:block id="js-resources">
+    <script th:inline="javascript" >
+        $.ajax({
+            url: "api/product-cart",
+            type:"GET",
+            contentType:"application/json; charset=utf-8",
+        })
+
+    </script>
+</th:block>
+</body>
+</html>
